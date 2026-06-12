@@ -1,142 +1,179 @@
-//
-//  ContentView.swift
-//  Ios-project
-//
-//  Created by student3 on 2026-06-06.
-//
-
-
-
 import SwiftUI
+internal import Combine
 
-struct ContentView: View {
-    @AppStorage("highScore") private var highScore = 0
+ struct ContentView: View {
 
-    @State private var score = 0
-    @State private var timeRemaining = 10
-    @State private var isGameRunning = true
-    @State private var isPenaltyTap = false
-    @State private var showFinalScore = false
-    @State private var isNewHighScore = false
+     @AppStorage("highScore") private var highScore = 0
 
-    private let gameTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+ @State  private var gamescore=0
+ @State private var timeRemain=10
+ @State private var isGameRunning=true
+ @State private var isPanalty = false
+ @State private var FinalScore = false
+ @State private var isNewHighScore=false
 
-    var body: some View {
-        VStack(spacing: 24) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Score: \(score)")
-                        .font(.title2)
-                        .fontWeight(.bold)
+ private let GTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-                    Text("High Score: \(highScore)")
-                        .font(.headline)
 
-                    if isNewHighScore {
-                        Text("High Score!")
-                            .font(.headline)
-                            .foregroundStyle(.green)
-                    }
-                }
+     var body: some View {
+             VStack(spacing: 10){
+                 HStack(alignment: .top){
+                     VStack(alignment: .leading, spacing:6){
+                         Text("Score  \(gamescore)")
+                             .font(.system(size: 30, weight: .light)
+//                             .fontWeight(.bold)
+                             )
+                             .foregroundStyle(.white)
+                             
+                              
+                             
 
-                Spacer()
+                         // Text("High Score ")
 
-                Button("Play Again") {
-                    resetGame()
-                }
-                .font(.headline)
-            }
+                         
+                     }
+                     Spacer()
 
-            Spacer()
+                     Button("Play Again"){
+                         resetGame()
+                     }
+                     .frame(width: 100, height: 40)
+                     .font(.headline)
+                     .background(Color.blue)
+                     .foregroundColor(.white)
+                     .cornerRadius(10)
+                 }
+                 
+                 
+        
+                 
+                 if(FinalScore){
+                     if(isNewHighScore){
+                         Text("High Score")
+                             .foregroundStyle(
+                                Color (
+                                    red :255.0 / 255.0,
+                                    green: 255.0 / 255.0,
+                                    blue: 0.0 / 255.0
+                                )
+                             )
+                             .padding(.top , 50)
+                             .font(.system(size: 40, weight: .light))
+//                             .onAppear{
+//                                 withAnimation(.easeInOut(duration: 1)){
+//                                     .font(.system(size: 32, weight: .bold))
+//                                     
+//                                 }
+//                             }
+                             
+                     }
+                 }
 
-            if showFinalScore {
-                VStack(spacing: 8) {
-                    Text("Time's Up!")
-                        .font(.title)
-                        .fontWeight(.bold)
+                 Spacer()
+                 
+                 if(FinalScore){
+                     VStack(spacing: 8){
+                         Text("Time's Up")
+//                             .font(.title)
+//                             .fontWeight(.bold)
+                             .padding(.bottom ,10)
+                             .foregroundStyle(Color.white)
+                             .font(.system(size: 32, weight: .regular))
 
-                    Text("Final Score: \(score)")
-                        .font(.title2)
-                }
-            }
+                         Text("Final Score \(gamescore)")
+                             .font(.system(size: 36 , weight: .regular))
+                             .padding(.bottom , 10)
+                             .foregroundStyle(Color.white)
+                             
+                     }
+                     .padding(.bottom , 40)
+                     
+                 }
 
-            Button {
-                handleTap()
-            } label: {
-                Text(isPenaltyTap ? "-2" : "TAP")
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(.white)
-                    .frame(width: buttonSize, height: buttonSize)
-                    .background(isPenaltyTap ? Color.red : Color.blue)
-                    .clipShape(Circle())
-            }
-            .disabled(!isGameRunning)
-            .opacity(isGameRunning ? 1 : 0.5)
+                 Button {
+                     buttonTap()
+                 } label:{
+                     Text(isPanalty ? "-1" : "TAP")
+                         .font(.system(size: updateTextsize, weight: .bold))
+                         .foregroundStyle(.white)
+                         .frame(width: updatebuttonSize, height: updatebuttonSize)
+                         .background(isPanalty ? Color.red : Color.blue)
+                         .clipShape(Circle())
+                 }
+                 .disabled(!isGameRunning)
+                 .opacity(isGameRunning ? 1 : 0.1)
+                
 
-            if isPenaltyTap {
-                Text("Red tap gives -2 points")
-                    .foregroundStyle(.red)
-            } else {
-                Text("Blue tap gives +1 point")
-                    .foregroundStyle(.secondary)
-            }
+                 Spacer()
 
-            Spacer()
+                 Text("\(timeRemain)")
+                     .font(.system(size: 48, weight: .bold))
+//                     .fontWeight(.bold)
+                     .padding(.bottom ,20)
+                     .foregroundStyle(Color.white)
+                     .opacity(isGameRunning ? 1 : 0.1)
 
-            Text("Time: \(timeRemaining)")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-        }
-        .padding(24)
-        .onReceive(gameTimer) { _ in
-            guard isGameRunning else { return }
+             }
+             .padding(24)
+             .background(
+                Color (
+                    red: 37.0 / 255.0,
+                    green: 40.0 / 255.0,
+                    blue: 54.0 / 255.0
+                    )
+             )
 
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-                isPenaltyTap = Int.random(in: 1...4) == 1
-            }
+             .onReceive(GTimer) { _ in
+             guard isGameRunning else { return }
 
-            if timeRemaining == 0 {
-                endGame()
-            }
-        }
-    }
+             if timeRemain > 0 {
+                 timeRemain -= 1
+                 isPanalty = Int.random(in: 1...4) == 1
+             }
 
-    private var buttonSize: CGFloat {
-        CGFloat(80 + (timeRemaining * 14))
-    }
+             if timeRemain == 0 {
+                 endGame()
+             }
+         }
+        
+     }
 
-    private func handleTap() {
-        if isPenaltyTap {
-            score = max(0, score - 2)
-        } else {
-            score += 1
-        }
-    }
+     private var updatebuttonSize: CGFloat{
+         CGFloat(80 + (timeRemain * 14))
+     }
+     
+     private var updateTextsize: CGFloat{
+         CGFloat(32 + (timeRemain * 2))
+     }
 
-    private func resetGame() {
-        score = 0
-        timeRemaining = 10
-        isGameRunning = true
-        isPenaltyTap = false
-        showFinalScore = false
-        isNewHighScore = false
-    }
+     private func buttonTap(){
+         if isPanalty{
+             gamescore = max(0,gamescore - 1)
+         }
+         else{
+             gamescore = gamescore + 1
+         }
+     }
 
-    private func endGame() {
-        isGameRunning = false
-        showFinalScore = true
+     private func resetGame(){
+         gamescore=0;
+         timeRemain=10;
+         isGameRunning=true;
+         isPanalty=false;
+         FinalScore=false;
+         isNewHighScore=false;
+     }
 
-        if score > highScore {
-            highScore = score
-            isNewHighScore = true
-        }
-    }
-}
+     private func endGame(){
+         isGameRunning = false;
+         FinalScore = true;
+         if gamescore > highScore{
+             highScore = gamescore;
+             isNewHighScore = true;
+         }
+     }
 
-#Preview {
-    ContentView()
-}
+ }
 
 
 // import SwiftUI
