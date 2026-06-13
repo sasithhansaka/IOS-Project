@@ -1,7 +1,7 @@
 import SwiftUI
 internal import Combine
 
- struct ContentView: View {
+ struct Game1Screen: View {
 
      @AppStorage("highScore") private var highScore = 0
 
@@ -11,6 +11,7 @@ internal import Combine
  @State private var isPanalty = false
  @State private var FinalScore = false
  @State private var isNewHighScore=false
+ @State private var isGoldenButton = false
 
  private let GTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -93,11 +94,13 @@ internal import Combine
                  Button {
                      buttonTap()
                  } label:{
-                     Text(isPanalty ? "-1" : "TAP")
-                         .font(.system(size: updateTextsize, weight: .bold))
+                     Text(isGoldenButton ? "+5" :
+                        isPanalty ? "-1" : "TAP")
+                     .font(.system(size: isGoldenButton ? updateTextsize+20 : updateTextsize, weight: .bold))
                          .foregroundStyle(.white)
-                         .frame(width: updatebuttonSize, height: updatebuttonSize)
-                         .background(isPanalty ? Color.red : Color.blue)
+                         .frame(width: isGoldenButton ? updatebuttonSize+20 : updatebuttonSize,
+                                height: isGoldenButton ? updatebuttonSize+20 : updatebuttonSize)
+                         .background(isGoldenButton ? Color.yellow : isPanalty ? Color.red : Color.blue)
                          .clipShape(Circle())
                  }
                  .disabled(!isGameRunning)
@@ -128,7 +131,12 @@ internal import Combine
 
              if timeRemain > 0 {
                  timeRemain -= 1
-                 isPanalty = Int.random(in: 1...4) == 1
+                 
+                 let randomstate = Int.random(in: 1...4)
+                 isPanalty = randomstate == 1
+                 isGoldenButton = randomstate == 2
+                 
+                 
              }
 
              if timeRemain == 0 {
@@ -149,6 +157,8 @@ internal import Combine
      private func buttonTap(){
          if isPanalty{
              gamescore = max(0,gamescore - 1)
+         }else if isGoldenButton{
+             gamescore = gamescore + 5
          }
          else{
              gamescore = gamescore + 1
@@ -160,6 +170,7 @@ internal import Combine
          timeRemain=10;
          isGameRunning=true;
          isPanalty=false;
+         isGoldenButton=false ;
          FinalScore=false;
          isNewHighScore=false;
      }
@@ -177,7 +188,7 @@ internal import Combine
 
 
 #Preview {
-    ContentView()
+    Game1Screen()
 }
 
 
