@@ -6,17 +6,29 @@ struct HomeScreen: View {
         NavigationStack {
             VStack(spacing: 20) {
                 
-                Text("Home Screen")
+                Text("Lets Play Games")
                     .font(.largeTitle)
                     .bold()
                     .font(.title)
                     .foregroundColor(Color.white)
                     .padding()
+                    .padding(.bottom, 150)
+                
+//                Image("banner")
+//                       .resizable()
+////                       .scaledToFit()
+//                       .frame(width: 120, height: 180)
+//                       .padding(.bottom, 50)
+//                       .clipShape(Circle())
+//
+                       
+
+                
                 
                 NavigationLink(destination: Game1Screen()) {
                     Text("Game 1")
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                        .frame(width: 200, height: 60)
+                        .font(.headline)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
@@ -25,17 +37,28 @@ struct HomeScreen: View {
                 
                 NavigationLink(destination: Game2Screen()) {
                     Text("Game 2")
-                        .frame(width: 100, height: 40)
+                        .frame(width: 200, height: 60)
                         .font(.headline)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
+                        .padding(.bottom ,250)
                 }
                 .padding(.horizontal)
+                
+                Text("Developed by @Devlopment team")
+                    .font(.caption)
+                    .bold()
+                    .font(.title)
+                    .foregroundColor(Color.white)
+                    .padding()
+                    .padding(.bottom, 10)
+
                 
                 Spacer()
             }
             .padding(24)
+            .frame(maxWidth: .infinity)
             .background(
                Color (
                    red: 37.0 / 255.0,
@@ -44,6 +67,7 @@ struct HomeScreen: View {
                    )
             )
         }
+        
         .frame(maxWidth: .infinity)
 //        .padding()
             }
