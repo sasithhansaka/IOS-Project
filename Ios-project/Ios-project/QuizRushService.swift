@@ -6,6 +6,7 @@
 //
 
 import Foundation
+internal import UIKit
 
 
 struct QuizloadAPI  {
@@ -22,16 +23,51 @@ struct QuizloadAPI  {
         let response = try JSONDecoder().decode(TriviaResponse.self, from: data)
         
         return response.results.map { item in
-            APIQuestion(
-                question: item.question,
-                
-                
-                correctAnswer: item.correct_answer,
-                answers: (item.incorrect_answers + [item.correct_answer]).shuffled()
-            )
-        }
+                   let answers = (item.incorrect_answers + [item.correct_answer])
+                       .map { $0.htmlDecoded }
+                       .shuffled()
+
+                   return APIQuestion(
+                       question: item.question.htmlDecoded,
+                       correctAnswer: item.correct_answer.htmlDecoded,
+                       answers: answers
+                   )
+               }
+        
+//        return response.results.map { item in
+//            APIQuestion(
+//                question: item.question,
+//                
+//                
+//                correctAnswer: item.correct_answer,
+//                answers: (item.incorrect_answers + [item.correct_answer]).shuffled()
+//            )
+//        }
     }
 }
+
+private extension String {
+    var htmlDecoded: String {
+        guard let data = data(using: .utf8) else { return self }
+
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+
+        guard let attributedString = try? NSAttributedString(
+            data: data,
+            options: options,
+            documentAttributes: nil
+        ) else {
+            return self
+        }
+
+        return attributedString.string
+    }
+}
+
+
 
 
 struct APIQuestion {
