@@ -11,8 +11,8 @@ struct HomeScreen: View {
                     .bold()
                     .font(.title)
                     .foregroundColor(Color.white)
-                    .padding()
-                    .padding(.bottom, 150)
+                    .padding(.top ,50)
+                    .padding(.bottom, 120)
                 
 //                Image("banner")
 //                       .resizable()
@@ -42,9 +42,22 @@ struct HomeScreen: View {
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
+                        .padding(.bottom ,10)
+                }
+                .padding(.horizontal)
+                
+                NavigationLink(destination: QuizRushScreen()) {
+                    Text("Game 3")
+                        .frame(width: 200, height: 60)
+                        .font(.headline)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                         .padding(.bottom ,250)
                 }
                 .padding(.horizontal)
+                
+            
                 
                 Text("Developed by @Devlopment team")
                     .font(.caption)
