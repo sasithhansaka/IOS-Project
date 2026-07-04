@@ -8,6 +8,7 @@ struct QuizRushScreen: View {
     @State private var Score = 0
     @State private var Streakpoints = 0
     @State private var AlltimeStreak = 0
+
     @State private var correctlyAnswered = 0
     @State private var Loading =  false
     //   @State private var Errormessage=""

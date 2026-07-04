@@ -59,7 +59,7 @@ struct HomeScreen: View {
                 
             
                 
-                Text("Developed by @Devlopment team")
+                Text("Developed by @DDDDDD")
                     .font(.caption)
                     .bold()
                     .font(.title)
