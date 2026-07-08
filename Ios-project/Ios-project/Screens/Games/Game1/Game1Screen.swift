@@ -155,6 +155,8 @@ internal import Combine
                  endGame()
              }
          }
+             .toolbar(.hidden, for: .tabBar)
+
         
      }
 
