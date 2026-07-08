@@ -8,7 +8,6 @@ struct QuizRushScreen: View {
     @State private var Score = 0
     @State private var Streakpoints = 0
     @State private var AlltimeStreak = 0
-
     @State private var correctlyAnswered = 0
     @State private var Loading =  false
     //   @State private var Errormessage=""
@@ -17,11 +16,18 @@ struct QuizRushScreen: View {
     
     @State private var feedbackMessage = ""
     @State private var IsCorrectANswer = false
+    @State private var hasSavedSession = false
     
     @State private var questions: [APIQuestion] = []
     @State private var Errormessage=""
     
     @State private var  Userselectanswer = ""
+
+     @AppStorage("game3highScore") private var game3highScore = 0
+
+     @State private var isNewHighScore = false
+
+@EnvironmentObject private var locationService: LocationService
     
     
     
@@ -64,24 +70,31 @@ struct QuizRushScreen: View {
                     
                         .padding(.bottom , 60)
                         .font(.system(size: 40, weight: .medium))
+
+                    if isNewHighScore {
+                    Text("High Score")
+                        .foregroundStyle(.white)
+                        .padding(.bottom ,10)
+                        .font(.system(size: 24, weight: .medium))
+                    }
                     
                     Text("Final Score \(Score)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 26, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
                     
                     
                     
                     Text("Correct Answers \(correctlyAnswered)/\(questions.count)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 26, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
                     
                     
                     Text("Best Streak \(AlltimeStreak)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 26, weight: .medium))
+                        .font(.system(size: 24, weight: .medium))
                     
                     
                     
@@ -90,12 +103,20 @@ struct QuizRushScreen: View {
                         loadQuiz()
                     }
                     
-                    .frame(width: 140, height: 40)
+                    .frame(width: 100, height: 40)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     //                    .padding(.trailing ,50)
                     //                        .padding(.bottom , )
+
+                ShareLink(
+                        item: "I just scored \(Score) on Quiz Rush - beat that!"
+                    ) {
+                        Label("Share Score", systemImage: "square.and.arrow.up")
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 10)
                     
                 }
             }
@@ -190,6 +211,7 @@ struct QuizRushScreen: View {
                 loadQuiz()
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
     
     //    private var topBar: some View{
@@ -231,6 +253,8 @@ struct QuizRushScreen: View {
         Streakpoints = 0
         AlltimeStreak = 0
         correctlyAnswered = 0
+        isNewHighScore = false
+        hasSavedSession = false
         
         //
         
@@ -289,14 +313,35 @@ struct QuizRushScreen: View {
             AnswerLocked = false
             
             if currentIndex >= questions.count {
-                Isfinished = true
+                finishQuiz()
             }
         }
         
+    }
+
+    private func finishQuiz() {
+        guard !hasSavedSession else { return }
+
+        Isfinished = true
+        checkHighScore()
+
+        GameSessionService.shared.saveSession(
+            mode: .quizRush,
+            score: Score,
+            locationService: locationService
+        )
+
+        hasSavedSession = true
+    }
+
+    private func checkHighScore() {
+    if Score > game3highScore {
+        game3highScore = Score
+        isNewHighScore = true
+    }
     }
 }
 
 #Preview {
     QuizRushScreen()
 }
-
