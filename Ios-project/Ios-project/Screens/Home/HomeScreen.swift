@@ -26,7 +26,7 @@ struct HomeScreen: View {
             
             
             NavigationLink(destination: Game1Screen()) {
-                Text("Game 1")
+                Text("Tap Frenzy")
                     .frame(width: 200, height: 60)
                     .font(.headline)
                     .background(Color.blue)
@@ -36,7 +36,7 @@ struct HomeScreen: View {
             .padding(.horizontal)
             
             NavigationLink(destination: GameTwoScreen()) {
-                Text("Game 2")
+                Text("Light It Up")
                     .frame(width: 200, height: 60)
                     .font(.headline)
                     .background(Color.blue)
@@ -47,7 +47,7 @@ struct HomeScreen: View {
             .padding(.horizontal)
             
             NavigationLink(destination: QuizRushScreen()) {
-                Text("Game 3")
+                Text("Quiz Rush")
                     .frame(width: 200, height: 60)
                     .font(.headline)
                     .background(Color.blue)

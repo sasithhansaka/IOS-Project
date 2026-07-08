@@ -13,7 +13,7 @@ struct MainTabView: View {
         TabView {
             NavigationStack {
                 HomeScreen()
-                    .navigationTitle("Home")
+//                    .navigationTitle("Home")
                     .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
@@ -23,7 +23,7 @@ struct MainTabView: View {
 
             NavigationStack {
                 StatsScreen()
-                    .navigationTitle("Stats")
+//                    .navigationTitle("Stats")
                     .navigationBarTitleDisplayMode(.inline)
             }
 
@@ -35,7 +35,7 @@ struct MainTabView: View {
 
             NavigationStack {
                 MapScreen()
-                    .navigationTitle("Map")
+//                    .navigationTitle("Map")
                     .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
@@ -47,7 +47,7 @@ struct MainTabView: View {
 
             NavigationStack {
                 SettingsScreen()
-                    .navigationTitle("Settings")
+//                    .navigationTitle("Settings")
                     .navigationBarTitleDisplayMode(.inline)
             }
             .tabItem {
