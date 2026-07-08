@@ -8,6 +8,7 @@ struct QuizRushScreen: View {
     @State private var Score = 0
     @State private var Streakpoints = 0
     @State private var AlltimeStreak = 0
+
     @State private var correctlyAnswered = 0
     @State private var Loading =  false
     //   @State private var Errormessage=""
@@ -67,20 +68,20 @@ struct QuizRushScreen: View {
                     Text("Final Score \(Score)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 24, weight: .medium))
+                        .font(.system(size: 26, weight: .medium))
                     
                     
                     
                     Text("Correct Answers \(correctlyAnswered)/\(questions.count)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 24, weight: .medium))
+                        .font(.system(size: 26, weight: .medium))
                     
                     
                     Text("Best Streak \(AlltimeStreak)")
                         .foregroundStyle(.white)
                         .padding(.bottom ,10)
-                        .font(.system(size: 24, weight: .medium))
+                        .font(.system(size: 26, weight: .medium))
                     
                     
                     
@@ -89,7 +90,7 @@ struct QuizRushScreen: View {
                         loadQuiz()
                     }
                     
-                    .frame(width: 100, height: 40)
+                    .frame(width: 140, height: 40)
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
