@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Ios_projectApp: App {
+    @StateObject private var locationService = LocationService()
+
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            MainTabView()
+                .environmentObject(locationService)
         }
     }
 }
