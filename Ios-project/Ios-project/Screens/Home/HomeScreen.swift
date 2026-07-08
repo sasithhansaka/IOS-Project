@@ -11,7 +11,7 @@ struct HomeScreen: View {
                 .bold()
                 .font(.title)
                 .foregroundColor(Color.white)
-                .padding(.top ,60)
+                .padding(.top ,30)
 //                .padding(.bottom, 120)
                 .frame(maxWidth: .infinity, alignment: .leading)
             

@@ -33,7 +33,7 @@ struct SettingsScreen: View {
                 Text("Settings")
                     .font(.largeTitle.bold())
                     .foregroundColor(.white)
-                    .padding(.top ,10)
+                    .padding(.top ,30)
 
                 Text("Manage notifications, challenge time, and your saved game data from one place.")
                     .font(.subheadline)
@@ -88,7 +88,7 @@ struct SettingsScreen: View {
                     }
                 }
                 .padding(14)
-                .padding(.top ,20)
+                .padding(.top ,10)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     Color(
