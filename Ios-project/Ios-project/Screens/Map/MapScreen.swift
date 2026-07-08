@@ -13,7 +13,7 @@ struct MapScreen: View {
 
     var body: some View {
 
-        ZStack {
+        ZStack (alignment: .bottom) {
 
             Map(position: $position) {
 
@@ -45,46 +45,78 @@ struct MapScreen: View {
             }
 
 
-            VStack {
+          if let session = selectedSession {
+                            VStack(alignment: .leading, spacing: 12) {
+//                                HStack {
+//                                    Text("Game Details")
+//                                        .font(.headline.bold())
+//                                        .foregroundColor(.white)
+//
+//                                    Spacer()
+//
+//                                    Button {
+//                                        selectedSession = nil
+//                                    } label: {
+//                                        Image(systemName: "xmark")
+//                                            .font(.caption.bold())
+//                                            .foregroundColor(.white.opacity(0.85))
+//                                            .padding(8)
+//                                            .background(Color.white.opacity(0.12))
+//                                            .clipShape(Circle())
+//                                    }
+//                                }
 
-                
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(session.mode.rawValue)
+                                        .font(.title3.bold())
+                                        .foregroundColor(.white)
 
-                // Show selected game details
-                if let session = selectedSession {
+                                    Text("Score: \(session.score)")
+                                        .font(.headline)
+                                        .foregroundColor(.white.opacity(0.95))
 
-                    VStack(spacing: 8) {
+                                    Text(
+                                        session.timestamp.formatted(
+                                            date: .abbreviated,
+                                            time: .shortened
+                                        )
+                                    )
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.75))
+                                }
 
-                        Text(session.mode.rawValue)
-                            .font(.headline)
-
-                        Text("Score: \(session.score)")
-                            .font(.title2.bold())
-
-
-                        Text(
-                            session.timestamp.formatted(
-                                date: .abbreviated,
-                                time: .shortened
+                                Button {
+                                    selectedSession = nil
+                                } label: {
+                                    Text("Close")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 14)
+                                        .background(Color.blue)
+                                        .cornerRadius(12)
+                                }
+                            }
+                            .padding(18)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                Color(
+                                    red: 37.0 / 255.0,
+                                    green: 40.0 / 255.0,
+                                    blue: 54.0 / 255.0
+                                )
                             )
-                        )
-                        .font(.caption)
-
-
-                        Button("Close") {
-
-                            selectedSession = nil
-
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 18)
+//                                    .stroke(Color.white.opacity(0.08), lineWidth: 1)
+//                            )
+                            .cornerRadius(18)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 16)
+                            
                         }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.white)
-                    .cornerRadius(15)
-                    .padding()
 
-                }
-
-            }
+                    
 
         }
 
