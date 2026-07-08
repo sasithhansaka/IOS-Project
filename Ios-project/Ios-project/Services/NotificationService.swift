@@ -40,7 +40,7 @@ class NotificationService {
         let content = UNMutableNotificationContent()
 
         content.title = "Daily challenge "
-        content.body = "Come back and beat your high score!"
+        content.body = "Come back and beat your high score"
         content.sound = .default
 
         var date = DateComponents()
