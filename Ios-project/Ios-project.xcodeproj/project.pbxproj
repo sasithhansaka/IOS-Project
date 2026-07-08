@@ -10,9 +10,33 @@
 		D74DB74E2FD43224007C65B6 /* Ios-project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ios-project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D788941D2FFDFB68007FFA19 /* Exceptions for "Ios-project" folder in "Ios-project" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.swift,
+			);
+			target = D74DB74D2FD43224007C65B6 /* Ios-project */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		D788941E2FFDFB68007FFA19 /* Exceptions for "Ios-project" folder in "Compile Sources" phase from "Ios-project" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = D74DB74A2FD43224007C65B6 /* Sources */;
+			membershipExceptions = (
+				.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D74DB7502FD43224007C65B6 /* Ios-project */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D788941D2FFDFB68007FFA19 /* Exceptions for "Ios-project" folder in "Ios-project" target */,
+				D788941E2FFDFB68007FFA19 /* Exceptions for "Ios-project" folder in "Compile Sources" phase from "Ios-project" target */,
+			);
 			path = "Ios-project";
 			sourceTree = "<group>";
 		};
