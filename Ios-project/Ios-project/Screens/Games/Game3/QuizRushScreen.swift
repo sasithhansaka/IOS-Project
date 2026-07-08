@@ -16,6 +16,7 @@ struct QuizRushScreen: View {
     
     @State private var feedbackMessage = ""
     @State private var IsCorrectANswer = false
+    @State private var hasSavedSession = false
     
     @State private var questions: [APIQuestion] = []
     @State private var Errormessage=""
@@ -110,7 +111,7 @@ struct QuizRushScreen: View {
                     //                        .padding(.bottom , )
 
                 ShareLink(
-                        item: "I just scored \(Score) on Quiz Rush — beat that!"
+                        item: "I just scored \(Score) on Quiz Rush - beat that!"
                     ) {
                         Label("Share Score", systemImage: "square.and.arrow.up")
                     }
@@ -253,6 +254,7 @@ struct QuizRushScreen: View {
         AlltimeStreak = 0
         correctlyAnswered = 0
         isNewHighScore = false
+        hasSavedSession = false
         
         //
         
@@ -311,16 +313,25 @@ struct QuizRushScreen: View {
             AnswerLocked = false
             
             if currentIndex >= questions.count {
-                Isfinished = true
-                checkHighScore()
-                GameSessionService.shared.saveSession(
-                    mode: .quizRush,
-                    score: Score,
-                    locationService: locationService
-                )
+                finishQuiz()
             }
         }
         
+    }
+
+    private func finishQuiz() {
+        guard !hasSavedSession else { return }
+
+        Isfinished = true
+        checkHighScore()
+
+        GameSessionService.shared.saveSession(
+            mode: .quizRush,
+            score: Score,
+            locationService: locationService
+        )
+
+        hasSavedSession = true
     }
 
     private func checkHighScore() {

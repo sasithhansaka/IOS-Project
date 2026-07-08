@@ -47,14 +47,7 @@ struct MapScreen: View {
 
             VStack {
 
-                Text("Completed Games Map")
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(.white)
-                    .padding(.top,20)
-
-
-                Spacer()
-
+                
 
                 // Show selected game details
                 if let session = selectedSession {

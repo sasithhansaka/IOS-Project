@@ -59,13 +59,13 @@ struct HomeScreen: View {
             
         
             
-            Text("Developed by @Devlopment team")
-                .font(.caption)
-                .bold()
-                .font(.title)
-                .foregroundColor(Color.white)
-                .padding()
-                .padding(.bottom, 10)
+//            Text("Developed by @Devlopment team")
+//                .font(.caption)
+//                .bold()
+//                .font(.title)
+//                .foregroundColor(Color.white)
+//                .padding()
+//                .padding(.bottom, 10)
 
             
             Spacer()

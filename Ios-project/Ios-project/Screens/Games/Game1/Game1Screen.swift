@@ -4,6 +4,9 @@ internal import Combine
  struct Game1Screen: View {
 
      @AppStorage("highScore") private var highScore = 0
+     
+     @EnvironmentObject private var locationService: LocationService
+
 
  @State  private var gamescore=0
  @State private var timeRemain=10
@@ -85,6 +88,15 @@ internal import Combine
                              .font(.system(size: 36 , weight: .regular))
                              .padding(.bottom , 10)
                              .foregroundStyle(Color.white)
+                         
+                         
+                         ShareLink(
+                             item: "I just scored \(gamescore) on Tap Frenzy - beat that!"
+                         ) {
+                             Label("Share Score", systemImage: "square.and.arrow.up")
+                         }
+                         .foregroundStyle(.white)
+
                              
                      }
                      .padding(.bottom , 40)
@@ -175,13 +187,29 @@ internal import Combine
          isNewHighScore=false;
      }
 
-     private func endGame(){
-         isGameRunning = false;
-         FinalScore = true;
-         if gamescore > highScore{
-             highScore = gamescore;
-             isNewHighScore = true;
+//     private func endGame(){
+//         isGameRunning = false;
+//         FinalScore = true;
+//         if gamescore > highScore{
+//             highScore = gamescore;
+//             isNewHighScore = true;
+//         }
+//     }
+     
+     private func endGame() {
+         isGameRunning = false
+         FinalScore = true
+
+         if gamescore > highScore {
+             highScore = gamescore
+             isNewHighScore = true
          }
+
+         GameSessionService.shared.saveSession(
+             mode: .tapFrenzy,
+             score: gamescore,
+             locationService: locationService
+         )
      }
 
  }
