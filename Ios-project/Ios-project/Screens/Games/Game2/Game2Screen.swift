@@ -1,7 +1,11 @@
 import SwiftUI
 internal import Combine
+import Foundation
+
 
 struct GameTwoScreen: View {
+
+    @EnvironmentObject private var locationService: LocationService
 
     @AppStorage("game2highScore") private var Game2highScore = 0
 
@@ -22,9 +26,6 @@ struct GameTwoScreen: View {
 
         VStack(spacing: 10) {
 
-            //--------------------------------------------------
-            // TOP BAR
-            //--------------------------------------------------
 
             HStack(alignment: .top) {
 
@@ -49,10 +50,6 @@ struct GameTwoScreen: View {
                 .cornerRadius(10)
             }
 
-            //--------------------------------------------------
-            // HIGH SCORE MESSAGE
-            //--------------------------------------------------
-
             if finalScore && isNewHighScore {
 
                 Text("High Score")
@@ -63,9 +60,7 @@ struct GameTwoScreen: View {
 
             Spacer()
 
-            //--------------------------------------------------
-            // GAME OVER
-            //--------------------------------------------------
+            
 
             if finalScore {
 
@@ -78,6 +73,13 @@ struct GameTwoScreen: View {
                     Text("Final Score \(score)")
                         .font(.system(size: 36))
                         .foregroundStyle(.white)
+
+                     ShareLink(
+                        item: "I just scored \(score) on Light It Up — beat that!"
+                    ) {
+                        Label("Share Score", systemImage: "square.and.arrow.up")
+                    }
+                    .foregroundStyle(.white)
                 }
 
             } else {
@@ -148,11 +150,8 @@ struct GameTwoScreen: View {
                 endGame()
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
-
-    //--------------------------------------------------
-    // LEVELS
-    //--------------------------------------------------
 
     private var currentLevel: Int {
 
@@ -220,9 +219,6 @@ struct GameTwoScreen: View {
         }
     }
 
-    //--------------------------------------------------
-    // LEVEL SETUP
-    //--------------------------------------------------
 
     private func setupLevel() {
 
@@ -234,9 +230,6 @@ struct GameTwoScreen: View {
         }
     }
 
-    //--------------------------------------------------
-    // LIGHTING SYSTEM
-    //--------------------------------------------------
 
     private func startLighting() {
 
@@ -277,9 +270,7 @@ struct GameTwoScreen: View {
         }
     }
 
-    //--------------------------------------------------
-    // CARD TAP
-    //--------------------------------------------------
+   
 
     private func cardTapped(_ index: Int) {
 
@@ -296,10 +287,6 @@ struct GameTwoScreen: View {
         }
     }
 
-    //--------------------------------------------------
-    // GAME END
-    //--------------------------------------------------
-
     private func endGame() {
 
         isGameRunning = false
@@ -310,12 +297,13 @@ struct GameTwoScreen: View {
             Game2highScore = score
             isNewHighScore = true
         }
+
+        GameSessionService.shared.saveSession(
+            mode: .lightItUp,
+            score: score,
+            locationService: locationService
+        )
     }
-
-    //--------------------------------------------------
-    // RESET
-    //--------------------------------------------------
-
     private func resetGame() {
 
         score = 0
@@ -332,14 +320,11 @@ struct GameTwoScreen: View {
         }
     }
 }
-
-#Preview {
-    Game2Screen()
-}
-
-import Foundation
-
 struct Card1: Identifiable {
     let id: Int
     var isLit = false
+}
+
+#Preview {
+    GameTwoScreen()
 }
