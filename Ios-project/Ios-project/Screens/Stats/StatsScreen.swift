@@ -18,54 +18,64 @@ struct StatsScreen: View {
     @State private var sessions: [GameSession] = []
 
     var body: some View {
-        ScrollView {
-            VStack {
-                 VStack {
-                    Text("Game Statistics")
-                        // .padding(.bottom ,10)
-                             .foregroundStyle(Color.white)
-                             .font(.system(size: 32, weight: .regular))
-
-
-                    // Text("A quick view of completed games, best scores, and recent runs.")
-                    //     .font(.subheadline)
-                    //     .foregroundStyle(.secondary)
-                }
-
-                recentGamesSection
-
-
-            VStack {
-            Text("Personal Bests")
-                .font(.title2.bold())
-
-            StatCard(
-                title: "Tap Frenzy",
-                value: "\(tapFrenzyHighscore)"
-            )
-            StatCard(
-                title: "Light It Up",
-                value: "\(lightItUpHighscore)"
-            )
-            StatCard(
-                title: "Quiz Rush",
-                value: "\(quizRushHighscore)"
-            )
-            }
-
-            chartSection
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(24)
-                    .background(
-            Color (
+        ZStack {
+            Color(
                 red: 37.0 / 255.0,
                 green: 40.0 / 255.0,
                 blue: 54.0 / 255.0
             )
             .ignoresSafeArea()
-            )
-       }
+
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Game Statistics")
+                            .font(.largeTitle.bold())
+                            .foregroundColor(.white)
+                            .padding(.top ,30)
+                    }
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Personal Bests")
+                            .font(.headline.bold())
+                            .foregroundColor(.white)
+
+                        StatCard(
+                            title: "Tap Frenzy",
+                            value: "\(tapFrenzyHighscore)"
+                        )
+                        StatCard(
+                            title: "Light It Up",
+                            value: "\(lightItUpHighscore)"
+                        )
+                        StatCard(
+                            title: "Quiz Rush",
+                            value: "\(quizRushHighscore)"
+                        )
+                    }
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(
+                        Color(
+                            red: 47.0 / 255.0,
+                            green: 50.0 / 255.0,
+                            blue: 66.0 / 255.0
+                        )
+                    )
+                    // .overlay(
+                    //     RoundedRectangle(cornerRadius: 14)
+                    //         .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                    // )
+                    .cornerRadius(14)
+
+                    recentGamesSection
+
+                    chartSection
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(20)
+            }
+        }
         .onAppear {
                     loadSessions()
                 }
@@ -88,7 +98,6 @@ struct StatsScreen: View {
             .map { $0.score }
             .max() ?? 0
     }
-
 
     private var lightItUpHighscore:Int {
         sessions
@@ -117,61 +126,69 @@ struct StatsScreen: View {
     
 
     private var recentGamesSection: some View {
-    VStack() {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Recent Games")
+                .font(.headline.bold())
+                .foregroundColor(.white)
 
-        Text("Recent Games")
-            .font(.title2.bold())
+            if recentGames.isEmpty {
+                Text("No games played yet.")
+                    .foregroundStyle(.white)
 
-        if recentGames.isEmpty {
-
-            Text("No games played yet.")
-                .foregroundStyle(.secondary)
-
-        } else {
-
-            VStack() {
-
-                ForEach(recentGames) { game in
-
-                    HStack {
-
-                        VStack() {
-
-                            Text(game.mode.rawValue)
-   .font(.caption)
-                .foregroundStyle(.secondary)
-                            Text(
-                                game.timestamp.formatted(
-                                    date: .abbreviated,
-                                    time: .shortened
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(recentGames) { game in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(game.mode.rawValue)
+                                    .font(.caption)
+                                    .foregroundStyle(.white)
+                                Text(
+                                    game.timestamp.formatted(
+                                        date: .abbreviated,
+                                        time: .shortened
+                                    )
                                 )
-                            )
-                            .font(.caption)
-                .foregroundStyle(.secondary)
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                            }
+
+                            Spacer()
+
+                            Text("\(game.score)")
+                                .font(.title3.bold())
                         }
-
-                        Spacer()
-
-                        Text("\(game.score)")
-                            .font(.title3.bold())
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.white.opacity(0.04))
+                        .cornerRadius(12)
                     }
-                    // .padding()
-                    // .background(Color.gray.opacity(0.12))
-                    // .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
         }
-    }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            Color(
+                red: 47.0 / 255.0,
+                green: 50.0 / 255.0,
+                blue: 66.0 / 255.0
+            )
+        )
+        .foregroundColor(.white)
+        .cornerRadius(14)
 }
 
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Session Chart")
-                .font(.title2.bold())
+                .font(.headline.bold())
+                .foregroundColor(.white)
 
             if chartSessions.isEmpty {
                 Text("Add a few completed games to see the chart.")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white)
             } else {
                 Chart {
                     ForEach(chartSessions) { session in
@@ -183,11 +200,20 @@ struct StatsScreen: View {
                         .position(by: .value("Session", session.id.uuidString))
                     }
                 }
-                .chartXAxisLabel("Mode")
-                .chartYAxisLabel("Score")
+                .chartXAxisLabel {
+                    Text("Mode")
+                        .foregroundStyle(.white)
+                }                .chartYAxisLabel("Score")
                 .frame(height: 260)
+//                .foregroundColor(.white)
             }
         }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            .white .opacity(0.8)
+        )
+        .cornerRadius(14)
     }
 }
 
@@ -196,20 +222,32 @@ private struct StatCard: View {
     let value: String
 
     var body: some View {
-        VStack() {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white)
 
             Text(value)
                 .font(.title2.bold())
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                // .lineLimit(1)
+                // .minimumScaleFactor(0.8)
+                .foregroundStyle(.white)
+            }
+
+            Spacer()
         }
-        // .frame(maxWidth: .infinity, alignment: .leading)
-        // .padding()
-        // .background(Color.gray.opacity(0.12))
-        // .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(.vertical, 10)
+        .padding(.horizontal, 12)
+
+        .frame(maxWidth: .infinity, alignment: .leading)
+
+        .background(Color.white.opacity(0.04))
+        // .overlay(
+        //     RoundedRectangle(cornerRadius: 12)
+        //         .stroke(Color.white.opacity(0.08), lineWidth: 1)
+        // )
+        .cornerRadius(12)
     }
 }
 
